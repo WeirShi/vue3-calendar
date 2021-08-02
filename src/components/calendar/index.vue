@@ -23,7 +23,7 @@
         class="item-day"
         :class="{
           'not-normal': day.type !== 'normal',
-          'select-day': highLight == day.id,
+          'select-day': choosedDay.timestamp == day.timestamp,
           'today': day.isToday
         }"
         :data-date="day.dateFormat"
@@ -67,16 +67,14 @@ const {
   setSelectDay
 } = useCalendar()
 
-// const choosedDay = ref({})
+const choosedDay = ref({})
+
 const selectDay = oneDay => {
-  // oneDay.isChoose
-  // setSelectDay(oneDay)
-  // highLight.value = day.value + targetDay.value - 1
-  // console.log("highLight", highLight.value)
+  choosedDay.value = oneDay
+  setSelectDay(oneDay)
 }
 
 const init = () => {
-  // highLight.value = day.value + targetDay.value - 1
   initData()
 }
 

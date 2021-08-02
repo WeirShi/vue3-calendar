@@ -6,7 +6,6 @@ export default function () {
   const day = ref(0)
   const dateList = ref([])
   const today = ref({})
-  const choosedDay = ref({})
 
 
   const initData = () => {
@@ -16,9 +15,6 @@ export default function () {
     day.value = today.date
     dateList.value = createList()
     today.value = today
-    console.log('year', year.value)
-    console.log('day', day.value)
-    console.log('month', month.value)
   }
 
   // 每个月的天数
@@ -30,7 +26,8 @@ export default function () {
 
     return days
   }
-  // 某月的1号是周几
+  
+  // 某个月的1号是周几
   const targetDay = () => {
     return new Date(year.value, month.value, 1).getDay()
   }
@@ -81,7 +78,6 @@ export default function () {
         list.push(obj)
       }
     }
-
   }
 
   // 本月
@@ -167,7 +163,7 @@ export default function () {
     month.value = oneDay.month
     day.value = oneDay.day
     dateList.value = createList()
-    // choosedDay.value = oneDay
+    console.log('dateList.value', dateList.value)
   }
 
   return {
@@ -177,10 +173,8 @@ export default function () {
     day,
     today,
     dateList,
-    choosedDay,
     handlePreMonth,
     handleNextMonth,
     setSelectDay,
   }
-
 }
