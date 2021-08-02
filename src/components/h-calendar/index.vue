@@ -7,7 +7,7 @@
       </div>
       <button class="backToday"
         v-on:click.prevent="backToToday"
-        v-if="showBackBtn">回到今天</button>
+        v-if="!choosedDay.isToday">回到今天</button>
     </div>
     <div class="date-list" ref="hCalendarRef">
       <div
@@ -118,7 +118,6 @@ const init = () => {
   today.value = formatOneDay(new Date())
   // 当前选中的日期
   choosedDay.value = formatOneDay(props.date)
-  showBackBtn.value = !choosedDay.value.isToday
   emit('change', choosedDay.value)
   // 展示的一周的第一天
   firstDay.value = formatOneDay(getWeekStartDate(getDetailOfDay(props.date)))
@@ -161,9 +160,7 @@ const formatOneDay = day => {
 }
 
 
-const showBackBtn = ref(false)
 const backToToday = () => {
-  showBackBtn.value = !today.isToday
   firstDay.value = today.value
   choosedDay.value = today.value
   createList()
@@ -178,7 +175,6 @@ const endClientX = ref(0)
 const endClientY = ref(0)
 
 const touchstart = e => {
-  console.log('touchstart', e)
   const { clientX, clientY } = e.changedTouches[0]
   startClientX.value = clientX
   startClientY.value = clientY
@@ -191,7 +187,7 @@ const touchend = e => {
 
   const distanceX = endClientX.value - startClientX.value
   const distanceY = endClientY.value - startClientY.value
-  showBackBtn.value = true
+  choosedDay.value.isToday = false
   //判断滑动 的方向
   if (distanceX > 30 && Math.abs(distanceY) < Math.abs(distanceX)) {
     // 右滑
@@ -201,7 +197,6 @@ const touchend = e => {
     // 左滑
     dateSwiper(1)
   }
-  console.log('touchend')
 }
 
 // 左右滑动翻页 1 往后加载7天，-1 往前加载7天
@@ -280,7 +275,6 @@ const dateSwiper = (type) => {
 
 const changeChoosedDay = (e, day) => {
   emit('change', day)
-  showBackBtn.value = !day.isToday
   choosedDay.value = day
   dateList.value.forEach(date => {
     date.isChoosed = date.timestamp === day.timestamp
