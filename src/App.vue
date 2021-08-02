@@ -1,8 +1,8 @@
 <template>
 
-  <!-- <Calendar />
+  <Calendar />
 
-  <br />
+  <!-- <br />
   <br />
   <br />
   <br />
@@ -10,9 +10,7 @@
   <br />
   <br /> -->
 
-  <!-- <button @click="backToToday">回到今天</button> -->
-
-  <HCalendar :date="date" @change="chooseDay" />
+  <!-- <HCalendar :date="date" @change="chooseDay" /> -->
 
 </template>
 
