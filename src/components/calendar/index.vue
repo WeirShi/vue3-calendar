@@ -2,14 +2,14 @@
   <div class="calendar">
     <!-- 日期标题和切换按钮 -->
     <div class="calendar-title">
-      <div class="arrow-box" @click="handlePreMonth">
-        <span>右箭头</span>
+      <div class="arrow-box left" @click="handlePreMonth">
+        <i class="icon"></i>
       </div>
       <div class="calendar-title__text">
-        {{ year }} - {{(month + 1) > 10 ? (month + 1) : '0' + (month + 1)}}
+        {{ year }} - {{(month + 1) >= 10 ? (month + 1) : '0' + (month + 1)}}
       </div>
-      <div class="arrow-box" @click="handleNextMonth">
-        <span>左箭头</span>
+      <div class="arrow-box right" @click="handleNextMonth">
+        <i class="icon"></i>
       </div>
     </div>
     <div class="week">
@@ -39,6 +39,7 @@
 import { ref, onMounted, watch } from 'vue';
 import useCalendar from './useCalendar'
 
+const emit = defineEmits(["change"]);
 const props = defineProps({
   date: {
     type: Date,
@@ -72,6 +73,7 @@ const choosedDay = ref({})
 const selectDay = oneDay => {
   choosedDay.value = oneDay
   setSelectDay(oneDay)
+  emit('change', oneDay)
 }
 
 const init = () => {
@@ -109,11 +111,28 @@ onMounted(init)
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    padding-left: 26px;
     &__text {
       margin: 0 16px;
       color: #2A303B;
       font-size: 17px;
       font-weight: bold;
+    }
+
+    .arrow-box {
+      .icon {
+        display: inline-block;
+        width: 8px;
+        height: 15px;
+        background-image: url(../../assets/calendar-arrow.png);
+        background-position: center;
+        background-size: cover;
+      }
+      &.right {
+        .icon {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
   &-body {

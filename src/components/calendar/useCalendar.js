@@ -163,7 +163,6 @@ export default function () {
     month.value = oneDay.month
     day.value = oneDay.day
     dateList.value = createList()
-    console.log('dateList.value', dateList.value)
   }
 
   return {
