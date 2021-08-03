@@ -120,7 +120,7 @@ const init = () => {
   choosedDay.value = formatOneDay(props.date)
   emit('change', choosedDay.value)
   // 展示的一周的第一天
-  firstDay.value = formatOneDay(getWeekStartDate(getDetailOfDay(props.date)))
+  firstDay.value = getFirstDay(props.date)
   createList()
 }
 
@@ -159,12 +159,15 @@ const formatOneDay = day => {
   }
 }
 
+const getFirstDay = date => {
+  return formatOneDay(getWeekStartDate(getDetailOfDay(date)))
+}
+
 
 const backToToday = () => {
-  firstDay.value = today.value
+  firstDay.value = getFirstDay(new Date())
   choosedDay.value = today.value
   createList()
-  console.log('backToToday')
 }
 
 onMounted(init)

@@ -2,15 +2,15 @@
 
   <Calendar />
 
-  <!-- <br />
   <br />
   <br />
   <br />
   <br />
   <br />
-  <br /> -->
+  <br />
+  <br />
 
-  <!-- <HCalendar :date="date" @change="chooseDay" /> -->
+  <HCalendar :date="date" @change="chooseDay" />
 
 </template>
 

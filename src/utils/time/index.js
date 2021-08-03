@@ -68,7 +68,7 @@ const getDetailOfDay = function (day = new Date()) {
  */
 const getWeekStartDate = function (options) {
   const {year, month, date, dayOfWeek} = options
-  const weekStartDate = new Date(year, month, date - (dayOfWeek - 1))
+  const weekStartDate = new Date(year, month, date - dayOfWeek)
   return weekStartDate
 }
 
