@@ -30,7 +30,7 @@
           'today': day.isToday
         }"
         :data-date="day.dateFormat"
-        @click="selectDay(day)"
+        @click.stop="selectDay(day)"
       >
         <span class="num">{{ day.isToday ? '今' : day.day }}</span>
       </div>
@@ -103,13 +103,13 @@ const touchend = e => {
   const distanceX = endClientX.value - startClientX.value
   const distanceY = endClientY.value - startClientY.value
 
-  if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX > 0 ) {
+  if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX > 30 ) {
     handlePreMonth()
-　} else if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX < 0 ) {
+　} else if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX < -30 ) {
     handleNextMonth()
-　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY > 0) {
+　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY > 30) {
     console.log("top 2 bottom")
-　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY < 0 ) {
+　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY < -30 ) {
     console.log("bottom 2 top")
 　}
 }
