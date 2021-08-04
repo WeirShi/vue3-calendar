@@ -159,6 +159,7 @@ const formatOneDay = day => {
   }
 }
 
+// 每周的第一个周日
 const getFirstDay = date => {
   return formatOneDay(getWeekStartDate(getDetailOfDay(date)))
 }

@@ -16,7 +16,10 @@
       <span class="week-title" v-for="(d, index) in week" :key="index">{{ d }}</span>
     </div>
     <!-- 日历主体部分 -->
-    <div class="calendar-body">
+    <div class="calendar-body"
+      @touchstart="touchstart"
+      @touchend="touchend"
+    >
       <div
         v-for="day in dateList"
         :key="day.id"
@@ -81,6 +84,35 @@ const init = () => {
 }
 
 onMounted(init)
+
+
+const startClientX = ref(0)
+const startClientY = ref(0)
+const endClientX = ref(0)
+const endClientY = ref(0)
+const touchstart = e => {
+  const { clientX, clientY } = e.changedTouches[0]
+  startClientX.value = clientX
+  startClientY.value = clientY
+}
+const touchend = e => {
+  const { clientX, clientY } = e.changedTouches[0]
+  endClientX.value = clientX
+  endClientY.value = clientY
+
+  const distanceX = endClientX.value - startClientX.value
+  const distanceY = endClientY.value - startClientY.value
+
+  if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX > 0 ) {
+    handlePreMonth()
+　} else if ( Math.abs(distanceX) > Math.abs(distanceY) && distanceX < 0 ) {
+    handleNextMonth()
+　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY > 0) {
+    console.log("top 2 bottom")
+　} else if ( Math.abs(distanceY) > Math.abs(distanceX) && distanceY < 0 ) {
+    console.log("bottom 2 top")
+　}
+}
 
 </script>
 
