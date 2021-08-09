@@ -5,9 +5,6 @@
         <i class="icon"></i>
         <span class="text">日历</span>
       </div>
-      <button class="backToday"
-        v-on:click.prevent="backToToday"
-        v-if="!choosedDay.isToday">回到今天</button>
     </div>
     <div class="date-list" ref="hCalendarRef">
       <div
@@ -27,7 +24,7 @@
           <div>
             <p
               class="date-item-date"
-              :class="{ choosed: day.isChoosed }"
+              :class="{ choosed: day.isChoosed, today: day.isToday }"
             >{{ day.date == 1 ? day.month + '月' : day.isToday ? '今' : day.date }}</p>
             <p class="date-item-day">{{ day.day }}</p>
             <p class="date-item-dot" v-if="day.hasSchedule"></p> 
@@ -35,6 +32,8 @@
         </div>
       </div>
     </div>
+
+    <button class="backToday" v-on:click.prevent="backToToday">回到今天</button>
   </div>
 </template>
 
@@ -43,7 +42,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue';
 import { dateFmt, isToday, getDayOfWeek, getDetailOfDay, getWeekStartDate } from '../../utils/time'
 
-const maxCount = 21
+const maxCount = 7
 const count = 7 // 放置的日期方块的数量
 const changeCount = 7 // 每次滑动7天
 const oneDay = 24 * 60 * 60 * 1000
@@ -70,17 +69,6 @@ const props = defineProps({
   }
 })
 
-watch(() => props.date,
-  (newVal, oldVal) => {
-    console.log(newVal.getTime())
-    console.log(oldVal.getTime())
-    if (newVal.getTime() !== oldVal.getTime()) {
-      console.log(1)
-      init()
-    }
-  }
-)
-
 // 每一个日期对象的数据结构如下
 // {
 //   dateFormat: "2019/07/20",
@@ -106,9 +94,10 @@ const choosedDay = ref({})
 // 今天
 const today = ref({})
 
+const isHasToday = ref(false)
+
 const translateX = ref(0)
 const transitionDuration = ref('300ms')
-
 
 const init = () => {
   domWidth.value = hCalendarRef.value.offsetWidth
@@ -164,11 +153,16 @@ const getFirstDay = date => {
   return formatOneDay(getWeekStartDate(getDetailOfDay(date)))
 }
 
+const hasToday = () => {
+  console.log(dateList.value.some(item => item.isToday))
+  return dateList.value.some(item => item.isToday)
+}
+
 
 const backToToday = () => {
-  firstDay.value = getFirstDay(new Date())
-  choosedDay.value = today.value
-  createList()
+  // firstDay.value = getFirstDay(new Date())
+  // choosedDay.value = today.value
+  // createList()
 }
 
 onMounted(init)
@@ -275,6 +269,8 @@ const dateSwiper = (type) => {
 
     }
   }
+
+  hasToday()
 }
 
 const changeChoosedDay = (e, day) => {

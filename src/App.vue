@@ -6,11 +6,14 @@
   <br />
   <br />
   <br />
+
+  <Progress type="circle" :percentage="60" />
+
   <br />
   <br />
   <br />
 
-  <HCalendar :date="date" @change="chooseDay" />
+  <HCalendar @change="chooseDay" />
 
 </template>
 
@@ -19,6 +22,7 @@ import { ref, nextTick } from 'vue';
 
 import Calendar from './components/calendar/index.vue'
 import HCalendar from './components/h-calendar/index.vue'
+import Progress from './components/progress/index.vue'
 
 const date = ref(new Date('2019/09/09'))
 
