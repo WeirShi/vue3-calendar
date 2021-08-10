@@ -42,7 +42,7 @@
 import { ref, onMounted, watch, nextTick } from 'vue';
 import { dateFmt, isToday, getDayOfWeek, getDetailOfDay, getWeekStartDate } from '../../utils/time'
 
-const maxCount = 7
+const maxCount = 21
 const count = 7 // 放置的日期方块的数量
 const changeCount = 7 // 每次滑动7天
 const oneDay = 24 * 60 * 60 * 1000
@@ -94,10 +94,11 @@ const choosedDay = ref({})
 // 今天
 const today = ref({})
 
-const isHasToday = ref(false)
+const isHasToday = ref(true)
 
 const translateX = ref(0)
 const transitionDuration = ref('300ms')
+const direction = ref('right')
 
 const init = () => {
   domWidth.value = hCalendarRef.value.offsetWidth
@@ -153,13 +154,21 @@ const getFirstDay = date => {
   return formatOneDay(getWeekStartDate(getDetailOfDay(date)))
 }
 
+// 判断当前数据中是否含有今天
 const hasToday = () => {
-  return dateList.value.some(item => item.isToday)
+  let data = []
+  if (direction.value === 'right') {
+    data = dateList.value.slice(0, 7)
+  } else if (direction.value === 'left') {
+    data = dateList.value.slice(7, 14)
+  }
+  const [date] = data.filter(item => item.isToday)
+  isHasToday.value = !!date
 }
 
 
 const backToToday = () => {
-  if (!hasToday()) {
+  if (!isHasToday.value) {
     firstDay.value = getFirstDay(new Date())
     choosedDay.value = today.value
     emit('change', choosedDay.value)
@@ -203,6 +212,7 @@ const touchend = e => {
 const dateSwiper = (type) => {
   // 右滑
   if (type === -1) {
+    direction.value = 'right'
     // 1，如果此时translateX < 单次滚动的日期长度，说明左侧有可滚动的日期，不需要生成更多日期
     if (translateX.value <= -itemWidth.value * changeCount) {
       translateX.value += itemWidth.value * changeCount;
@@ -235,6 +245,7 @@ const dateSwiper = (type) => {
       }, 16)
     }
   } else if (type === 1) {
+    direction.value = 'left'
     // 左滑
     // 判断右侧是否有可滚动的日期，有的话则直接滚动
     const hasSpace = dateList.value.length * itemWidth.value - domWidth.value + translateX.value
@@ -271,6 +282,7 @@ const dateSwiper = (type) => {
 
     }
   }
+  hasToday()
 }
 
 const changeChoosedDay = (e, day) => {
