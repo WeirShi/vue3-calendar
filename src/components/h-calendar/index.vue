@@ -154,15 +154,17 @@ const getFirstDay = date => {
 }
 
 const hasToday = () => {
-  console.log(dateList.value.some(item => item.isToday))
   return dateList.value.some(item => item.isToday)
 }
 
 
 const backToToday = () => {
-  // firstDay.value = getFirstDay(new Date())
-  // choosedDay.value = today.value
-  // createList()
+  if (!hasToday()) {
+    firstDay.value = getFirstDay(new Date())
+    choosedDay.value = today.value
+    emit('change', choosedDay.value)
+    createList()
+  }
 }
 
 onMounted(init)
@@ -269,8 +271,6 @@ const dateSwiper = (type) => {
 
     }
   }
-
-  hasToday()
 }
 
 const changeChoosedDay = (e, day) => {
